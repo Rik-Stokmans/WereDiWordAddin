@@ -75,6 +75,113 @@
   cursor: pointer;
 }
 
+.schedule {
+    background-color: rgb(253, 245, 234);
+}
+
 b {
     font-weight: bold;
+}
+
+.schedule-grid-container {
+    display: grid;
+    background-color: #005a9e;
+    width: 100vw;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-auto-rows: minmax(15.5vw, auto);
+    border: 1vw;
+    row-gap: 1vw;
+    column-gap: 1vw;
+    grid-template-areas: 
+    ". . startlabel startlabel . ."
+    ". . starttime  starttime  . . "
+    ". . passedhudtime passedhudstudents . ."
+    "passedtimepercent passedtimepercent currenttime currenttime passedstudentspercent passedstudentspercent"
+    ". . futurehudtime futurehudstudents . ."
+    ". . endtime endtime . ."
+    ". . endlabel endlabel . ."
+    ;
+
+}
+
+.schedule-grid-item-start_label {
+    grid-area: startlabel;
+    font-size: 15vw;
+    text-align: center;
+}
+
+.schedule-grid-item-start_time {
+    grid-area: starttime;
+    font-size: 13vw;
+    text-align: center;
+}
+
+.schedule-grid-item-passed_hud_time {
+    grid-area: passedhudtime;
+    font-size: 5vw;
+    text-align: center;
+    padding-top: 1vw;
+}
+
+.schedule-grid-item-passed_hud_students {
+    grid-area: passedhudstudents;
+    font-size: 5vw;
+    text-align: center;
+    padding-top: 1vw;
+}
+
+.schedule-grid-item-passed_time_percent {
+    grid-area: passedtimepercent;
+    font-size: 10vw;
+    text-align: right;
+    padding-top: 2vw;
+}
+
+.schedule-grid-item-current_time {
+    grid-area: currenttime;
+    font-size: 13vw;
+    text-align: center;
+}
+
+.schedule-grid-item-current_time > p {
+    margin: 0;
+}
+
+.schedule-grid-item-passed_students_percent {
+    grid-area: passedstudentspercent;
+    font-size: 10vw;
+    text-align: left;
+    padding-top: 2vw;
+}
+
+.schedule-grid-item-future_hud_time {
+    grid-area: futurehudtime;
+    font-size: 5vw;
+    text-align: center;
+    padding-top: 1vw;
+}
+
+.schedule-grid-item-future_hud_students {
+    grid-area: futurehudstudents;
+    font-size: 5vw;
+    text-align: center;
+    padding-top: 1vw;
+}
+
+.schedule-grid-item-end_time {
+    grid-area: endtime;
+    font-size: 13vw;
+    text-align: center;
+}
+
+.schedule-grid-item-end_label {
+    grid-area: endlabel;
+    font-size: 15vw;
+    text-align: center;
+}
+
+
+
+.schedule-grid-container > div {
+    background-color: #0078d7;
 }

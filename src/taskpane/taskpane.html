@@ -32,14 +32,55 @@
         <!--<div role="button" id="HelloWorld" class="ms-welcome__action ms-Button ms-Button--hero ms-font-xl">
             <span class="ms-Button-label">Hello World!</span>
         </div>-->
-        <div class="Timer">
-            <p>Time:</p>
-            <p id="time"></p>
+
+        <div class="schedule">
+            <div class="schedule-grid-container">
+                <div class="schedule-grid-item-start_label">
+                    Start
+                </div>
+                <div class="schedule-grid-item-start_time">
+                    12:24
+                </div>
+
+                <div class="schedule-grid-item-passed_hud_time">
+                    111
+                </div>
+                <div class="schedule-grid-item-passed_hud_students">
+                    75
+                </div>
+
+                <div class="schedule-grid-item-passed_time_percent">
+                    58%-
+                </div>
+                <div class="schedule-grid-item-current_time">
+                    <p id="time"></p>
+                </div>
+                <div class="schedule-grid-item-passed_students_percent">
+                    -71%
+                </div>
+
+                <div class="schedule-grid-item-future_hud_time">
+                    79
+                </div>
+                <div class="schedule-grid-item-future_hud_students">
+                    32
+                </div>
+
+                <div class="schedule-grid-item-end_time">
+                    15:34
+                </div>
+                <div class="schedule-grid-item-end_label">
+                    Eind
+                </div>
+            </div>
+            <div class="schedule-grid-item-empty"></div>
         </div>
+        
         <div class="TimeSelector">
             <p>Tot waneer wil je dat de vergadering duurt?</p>
-            <form>
-                <input type="time" id="TimeSelector" min="10:00">
+            <form id="TimeSelectorForm">
+                <input type="time" id="timeSelector" min="10:00" value="value">
+                <input type="submit" id="timeSelectorSubmit">
             </form>
             
         </div>
