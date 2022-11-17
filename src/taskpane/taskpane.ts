@@ -3,7 +3,13 @@
  * See LICENSE in the project root for license information.
  */
 
+
 /* global document, Office, Word */
+var startTime = "00:00";
+var currentTime = "00:00";
+var endTime = "00:00";
+
+
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
@@ -12,14 +18,16 @@ Office.onReady((info) => {
   }
 });
 
-var clock = document.getElementById('time');
-var endTimeSelector = document.getElementById('timeSelector');
+var startTimeElement = document.getElementById("start_time");
+var clock = document.getElementById('current_time');
+var endTimeElement = document.getElementById("end_time");
+var endTimeSelector = document.getElementById('endTimeSelector');
 
 
 function Clock() {
-  var time = new Date();
-  var hours = time.getHours().toString();
-  var minutes = time.getMinutes().toString();
+  var curTime = new Date();
+  var hours = curTime.getHours().toString();
+  var minutes = curTime.getMinutes().toString();
 
   if (hours.length < 2) {
     hours = '0' + hours;
@@ -30,25 +38,76 @@ function Clock() {
   }
 
   //sets the time to a variable
-  var clockStr = hours + ':' + minutes;
+  currentTime = hours + ':' + minutes;
 
   //checks if the timer is still on the same minute
   const prevTime = clock.textContent.split(":");
   if (prevTime[1] != (" "+minutes+" ")) {
     //updates the minimum value for the end time
-    if (minutes == " 59 ") endTimeSelector.setAttribute("min", ((hours+1) + ":00"));
+    if (minutes == "59") endTimeSelector.setAttribute("min", ((hours+1) + ":00"));
     else {
-      
+      endTimeSelector.setAttribute("min", (hours + ":" + (minutes+1)));
     }
   }
-
   //updates the clock variable to the current time
-  clock.textContent = clockStr;
+  clock.textContent = currentTime;
 
+  //updates the schedule hud
+  updateScheduleHud();
 }
 
 Clock();
 setInterval(Clock, 1000);
+
+//start button action
+const scheduleStartButton = document.getElementById('scheduleStartButton');
+scheduleStartButton?.addEventListener('click', function handleClick(event) {
+  startTime = currentTime;
+  startTimeElement.textContent = startTime;
+
+  scheduleStartButton.style.display = "none";
+});
+
+//end time setter button action
+const scheduleEndTimeSetter = document.getElementById('scheduleEndTimeSetter');
+scheduleEndTimeSetter?.addEventListener('click', function handleClick(event) {
+  var temp = document.getElementById("endTimeSelector") as HTMLInputElement;
+  endTime = temp.value;
+  
+  endTimeElement.textContent = endTime;
+  scheduleEndTimeSetter.textContent = "Edit end time"
+});
+
+function updateScheduleHud() {
+  if (startTime != "00:00" && currentTime != "00:00" && endTime != "00:00") {
+    var startTimeInMinutes: number = getAmountOfMinutes(startTime);
+    var currentTimeInMinutes: number = getAmountOfMinutes(currentTime);
+    var endTimeInMinutes: number = getAmountOfMinutes(endTime);
+
+    var passed_hud_time_content: number = (currentTimeInMinutes - startTimeInMinutes);
+    var future_hud_time_content: number = (endTimeInMinutes - currentTimeInMinutes);
+
+    var passed_hud_time = document.getElementById("passed_hud_time");
+    passed_hud_time.textContent = passed_hud_time_content.toString();
+
+    var passed_time_percent = document.getElementById("passed_time_percent");
+    passed_time_percent.textContent = (Math.round(passed_hud_time_content/(passed_hud_time_content+future_hud_time_content)*100)).toString();
+
+    var future_hud_time = document.getElementById("future_hud_time");
+    future_hud_time.textContent = future_hud_time_content.toString();
+  }
+}
+
+function getAmountOfMinutes(time: String):number {
+
+  const splittedTime = time.split(":");
+  var hours: number = Number(splittedTime[0]);
+  var minutes: number = Number(splittedTime[1]);
+
+  minutes += hours*60;
+  return minutes;
+  
+}
 
 export async function HelloWorld(debug, debug2) {
   return Word.run(async (context) => {

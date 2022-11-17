@@ -84,7 +84,7 @@ b {
 }
 
 .schedule-grid-container {
-    display: grid;
+    display: grid; 
     background-color: #005a9e;
     width: 100vw;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -102,6 +102,11 @@ b {
     ". . endlabel endlabel . ."
     ;
 
+}
+
+p {
+    margin: 0;
+    padding: 0;
 }
 
 .schedule-grid-item-start_label {
@@ -141,10 +146,6 @@ b {
     grid-area: currenttime;
     font-size: 13vw;
     text-align: center;
-}
-
-.schedule-grid-item-current_time > p {
-    margin: 0;
 }
 
 .schedule-grid-item-passed_students_percent {

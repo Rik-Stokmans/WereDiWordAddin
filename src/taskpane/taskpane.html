@@ -39,35 +39,35 @@
                     Start
                 </div>
                 <div class="schedule-grid-item-start_time">
-                    12:24
+                    <p id="start_time">None</p>
                 </div>
 
                 <div class="schedule-grid-item-passed_hud_time">
-                    111
+                    <p id="passed_hud_time"></p>
                 </div>
                 <div class="schedule-grid-item-passed_hud_students">
                     75
                 </div>
 
                 <div class="schedule-grid-item-passed_time_percent">
-                    58%-
+                    <p id="passed_time_percent"></p>
                 </div>
                 <div class="schedule-grid-item-current_time">
-                    <p id="time"></p>
+                    <p id="current_time"></p>
                 </div>
                 <div class="schedule-grid-item-passed_students_percent">
                     -71%
                 </div>
 
                 <div class="schedule-grid-item-future_hud_time">
-                    79
+                    <p id="future_hud_time"></p>
                 </div>
                 <div class="schedule-grid-item-future_hud_students">
                     32
                 </div>
 
                 <div class="schedule-grid-item-end_time">
-                    15:34
+                    <p id="end_time">None</p>
                 </div>
                 <div class="schedule-grid-item-end_label">
                     Eind
@@ -76,14 +76,19 @@
             <div class="schedule-grid-item-empty"></div>
         </div>
         
-        <div class="TimeSelector">
+
+        <input type="time" id="endTimeSelector" min="10:00" value="value">
+        <button id="scheduleEndTimeSetter">Set end time</button>
+
+        <!--<div class="EndTimeSelector">
             <p>Tot waneer wil je dat de vergadering duurt?</p>
-            <form id="TimeSelectorForm">
+            <form id="EndTimeSelectorForm">
                 <input type="time" id="timeSelector" min="10:00" value="value">
                 <input type="submit" id="timeSelectorSubmit">
             </form>
             
-        </div>
+        </div>-->
+        <button id="scheduleStartButton">Start</button>
     </main>
 </body>
 
