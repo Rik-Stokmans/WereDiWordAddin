@@ -11,6 +11,7 @@ var endTime = "00:00";
 
 
 
+
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     document.getElementById("sideload-msg").style.display = "none";
@@ -78,8 +79,16 @@ scheduleEndTimeSetter?.addEventListener('click', function handleClick(event) {
   scheduleEndTimeSetter.textContent = "Edit end time"
 });
 
+//button to load a table
+const loadTableButton = document.getElementById('loadTableButton');
+loadTableButton?.addEventListener('click', function handleClick(event) {
+  updateTableHud();
+});
+
 function updateScheduleHud() {
   if (startTime != "00:00" && currentTime != "00:00" && endTime != "00:00") {
+
+    //time items
     var startTimeInMinutes: number = getAmountOfMinutes(startTime);
     var currentTimeInMinutes: number = getAmountOfMinutes(currentTime);
     var endTimeInMinutes: number = getAmountOfMinutes(endTime);
@@ -91,10 +100,13 @@ function updateScheduleHud() {
     passed_hud_time.textContent = passed_hud_time_content.toString();
 
     var passed_time_percent = document.getElementById("passed_time_percent");
-    passed_time_percent.textContent = (Math.round(passed_hud_time_content/(passed_hud_time_content+future_hud_time_content)*100)).toString();
+    passed_time_percent.textContent = (Math.round(passed_hud_time_content/(passed_hud_time_content+future_hud_time_content)*100)).toString() + "% -";
 
     var future_hud_time = document.getElementById("future_hud_time");
     future_hud_time.textContent = future_hud_time_content.toString();
+
+    //student items
+    updateTableHud();
   }
 }
 
@@ -109,7 +121,28 @@ function getAmountOfMinutes(time: String):number {
   
 }
 
-export async function HelloWorld(debug, debug2) {
+export function updateTableHud() {
+  return Word.run(async (context) => {
+    //fetching the table
+    const StundentTable: Word.Table = context.document.body.tables.getFirst();
+
+    StundentTable.shadingColor = "red";
+
+    //hud updating code
+    //StundentTable.shadingColor = "red";
+    //HelloWorld(StundentTable.rowCount.toString(), "");
+
+    /*var passed_hud_students = document.getElementById("passed_hud_students");
+    passed_hud_students.textContent = StundentTable.rowCount.toString();*/
+    
+    await context.sync();
+  });
+}
+
+
+
+
+export async function HelloWorld(debug: String, debug2: String) {
   return Word.run(async (context) => {
     /**
      * Insert your Word code here
