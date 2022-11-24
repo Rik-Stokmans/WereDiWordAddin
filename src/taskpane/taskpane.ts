@@ -121,21 +121,15 @@ function getAmountOfMinutes(time: String):number {
   
 }
 
-export function updateTableHud() {
+export async function updateTableHud() {
   return Word.run(async (context) => {
     //fetching the table
-    const StundentTable: Word.Table = context.document.body.tables.getFirst();
+    var StundentTable: Word.Table = context.document.body.tables.getFirst();
+    StundentTable.load();
 
-    StundentTable.shadingColor = "red";
-
-    //hud updating code
-    //StundentTable.shadingColor = "red";
-    //HelloWorld(StundentTable.rowCount.toString(), "");
-
-    /*var passed_hud_students = document.getElementById("passed_hud_students");
-    passed_hud_students.textContent = StundentTable.rowCount.toString();*/
-    
     await context.sync();
+
+    HelloWorld(StundentTable.rowCount.toString() , "t");
   });
 }
 
