@@ -121,29 +121,60 @@ function getAmountOfMinutes(time: String):number {
   
 }
 
-export async function updateTableHud() {
+var studentCount: number = 0;
+var markedStudentCount: number = 0;
+var studentTimeWeightTotal: number = 0;
+var studentTimeWeightDone: number = 0;
+
+export async function getTableInfo() {
   return Word.run(async (context) => {
+    //resets table data variables
+    studentCount = 0;
+    markedStudentCount = 0;
+    studentTimeWeightTotal = 0;
+    studentTimeWeightDone = 0;
+
     //fetching the table
     var StundentTable: Word.Table = context.document.body.tables.getFirst();
     StundentTable.load();
 
     await context.sync();
 
-    HelloWorld(StundentTable.rowCount.toString() , "t");
+    studentCount = StundentTable.rowCount - 1;
+
+    var values: string[][] = StundentTable.values;
+
+    for (var i:number = 1; i <= studentCount; i++) {
+      var studentTimeWeight:number = +values[i][1];
+      studentTimeWeightTotal += studentTimeWeight;
+
+      if (values[i][0].toLowerCase() == "x") {
+        markedStudentCount++;
+        studentTimeWeightDone += studentTimeWeight;
+      }
+    }
   });
 }
 
+function updateTableHud() {
+  getTableInfo();
+
+  var passed_hud_students = document.getElementById("passed_hud_students");
+  passed_hud_students.textContent = markedStudentCount.toString();
+
+  var future_hud_students = document.getElementById("future_hud_students");
+  future_hud_students.textContent = (studentCount - markedStudentCount).toString();
+}
 
 
-
-export async function HelloWorld(debug: String, debug2: String) {
+export async function HelloWorld(debug: String, debug2: String, debug3: String) {
   return Word.run(async (context) => {
     /**
      * Insert your Word code here
      */
 
     // insert a paragraph at the end of the document.
-    const paragraph = context.document.body.insertParagraph(debug + " - " + debug2, Word.InsertLocation.end);
+    const paragraph = context.document.body.insertParagraph(debug + " - " + debug2 + " - " + debug3, Word.InsertLocation.end);
 
     // change the paragraph color to blue.
     paragraph.font.color = "blue";
