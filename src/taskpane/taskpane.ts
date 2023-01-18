@@ -4,7 +4,7 @@
  */
 
 
-/* global document, Office, Word */
+/* global document, Office, Word test */
 var startTime = "00:00";
 var currentTime = "00:00";
 var endTime = "00:00";
