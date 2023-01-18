@@ -144,13 +144,17 @@ export async function getTableInfo() {
 
     var values: string[][] = StundentTable.values;
 
-    for (var i:number = 1; i <= studentCount; i++) {
+    var iterator: number = studentCount;
+    for (var i:number = 1; i <= iterator; i++) {
       var studentTimeWeight:number = +values[i][1];
       studentTimeWeightTotal += studentTimeWeight;
 
       if (values[i][0].toLowerCase() == "x") {
         markedStudentCount++;
         studentTimeWeightDone += studentTimeWeight;
+      } 
+      else if (values[i][0] == "-" || values[i][0] == "") {
+        studentCount--;
       }
     }
   });
