@@ -9,9 +9,6 @@ var startTime = "00:00";
 var currentTime = "00:00";
 var endTime = "00:00";
 
-
-
-
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     document.getElementById("sideload-msg").style.display = "none";
