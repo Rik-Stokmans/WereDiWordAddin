@@ -11,7 +11,6 @@ var endTime = "00:00";
 
 
 
-
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
     document.getElementById("sideload-msg").style.display = "none";
@@ -19,10 +18,10 @@ Office.onReady((info) => {
   }
 });
 
-var startTimeElement = document.getElementById("start_time");
+//var startTimeElement = document.getElementById("start_time");
 var clock = document.getElementById('current_time');
-var endTimeElement = document.getElementById("end_time");
-var endTimeSelector = document.getElementById('endTimeSelector');
+//var endTimeElement = document.getElementById("end_time");
+//var endTimeSelector = document.getElementById('endTimeSelector');
 
 
 function Clock() {
@@ -45,23 +44,23 @@ function Clock() {
   const prevTime = clock.textContent.split(":");
   if (prevTime[1] != (" "+minutes+" ")) {
     //updates the minimum value for the end time
-    if (minutes == "59") endTimeSelector.setAttribute("min", ((hours+1) + ":00"));
+    /*if (minutes == "59") endTimeSelector.setAttribute("min", ((hours+1) + ":00"));
     else {
       endTimeSelector.setAttribute("min", (hours + ":" + (minutes+1)));
-    }
+    }*/
   }
   //updates the clock variable to the current time
   clock.textContent = currentTime;
 
   //updates the schedule hud
-  updateScheduleHud();
+  //updateScheduleHud();
 }
 
 Clock();
 setInterval(Clock, 1000);
 
 //start button action
-const scheduleStartButton = document.getElementById('scheduleStartButton');
+/*const scheduleStartButton = document.getElementById('scheduleStartButton');
 scheduleStartButton?.addEventListener('click', function handleClick(event) {
   startTime = currentTime;
   startTimeElement.textContent = startTime;
@@ -77,15 +76,15 @@ scheduleEndTimeSetter?.addEventListener('click', function handleClick(event) {
   
   endTimeElement.textContent = endTime;
   scheduleEndTimeSetter.textContent = "Edit end time"
-});
+});*/
 
 //button to load a table
-const loadTableButton = document.getElementById('loadTableButton');
+/*const loadTableButton = document.getElementById('loadTableButton');
 loadTableButton?.addEventListener('click', function handleClick(event) {
   updateTableHud();
-});
+});*/
 
-function updateScheduleHud() {
+/*function updateScheduleHud() {
   if (startTime != "00:00" && currentTime != "00:00" && endTime != "00:00") {
 
     //time items
@@ -108,7 +107,7 @@ function updateScheduleHud() {
     //student items
     updateTableHud();
   }
-}
+}*/
 
 function getAmountOfMinutes(time: String):number {
 

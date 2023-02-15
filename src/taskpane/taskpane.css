@@ -3,17 +3,53 @@
  * See LICENSE in the project root for license information.
  */
 
+ :root {
+    --shadow-color: 18deg 49% 51%;
+    --shadow-elevation-low:
+      0.2px 0.4px 0.4px hsl(var(--shadow-color) / 0.48),
+      0.4px 0.7px 0.8px -1.7px hsl(var(--shadow-color) / 0.4),
+      1px 1.7px 2px -3.4px hsl(var(--shadow-color) / 0.31);
+    --shadow-elevation-medium:
+      0.2px 0.4px 0.4px hsl(var(--shadow-color) / 0.4),
+      0.5px 0.9px 1px -0.8px hsl(var(--shadow-color) / 0.36),
+      1.1px 1.9px 2.2px -1.7px hsl(var(--shadow-color) / 0.32),
+      2.4px 4.2px 4.8px -2.6px hsl(var(--shadow-color) / 0.28),
+      4.9px 8.5px 9.7px -3.4px hsl(var(--shadow-color) / 0.23);
+    --shadow-elevation-high:
+      0.2px 0.4px 0.4px hsl(var(--shadow-color) / 0.38),
+      0.9px 1.5px 1.7px -0.4px hsl(var(--shadow-color) / 0.36),
+      1.5px 2.7px 3.1px -0.8px hsl(var(--shadow-color) / 0.34),
+      2.5px 4.3px 4.9px -1.1px hsl(var(--shadow-color) / 0.32),
+      3.9px 6.7px 7.7px -1.5px hsl(var(--shadow-color) / 0.3),
+      5.9px 10.3px 11.8px -1.9px hsl(var(--shadow-color) / 0.28),
+      8.9px 15.4px 17.6px -2.3px hsl(var(--shadow-color) / 0.26),
+      12.9px 22.4px 25.6px -2.6px hsl(var(--shadow-color) / 0.24),
+      18.1px 31.6px 36.1px -3px hsl(var(--shadow-color) / 0.22),
+      24.9px 43.4px 49.5px -3.4px hsl(var(--shadow-color) / 0.2);
+  }
+
+.header-img {
+    width: 20vw;
+    height: 20vw;
+    margin-left: 30vw;
+}
+
  html,
  body {
      width: 100%;
      height: 100%;
      margin: 0;
      padding: 0;
+     background-color: #E0D1A0;
  }
  
  ul {
      margin: 0;
      padding: 0;
+ }
+
+ .ms-bgColor-neutralLighter {
+    background-color: #E0D1A0;
  }
  
  .ms-welcome__header {
@@ -66,123 +102,92 @@
  }
  
 .ms-Button.ms-Button--hero .ms-Button-label {
-  color: #0078d7;
+  /*color: #0078d7;*/
 }
 
 .ms-Button.ms-Button--hero:hover .ms-Button-label,
 .ms-Button.ms-Button--hero:focus .ms-Button-label{
-  color: #005a9e;
+  /*color: #005a9e;*/
   cursor: pointer;
 }
 
-.schedule {
-    background-color: rgb(253, 245, 234);
+.schedule-grid-container {
+    margin-top: 10vw;
+    margin-bottom: 10vw;
+    display: grid; 
+    width: 100vw;
+    grid-template-columns: 1fr 5fr 5fr 1fr;
+    grid-auto-rows: minmax(15.5vw, auto);
+    border: 1vw;
+    row-gap: 5vw;
+    column-gap: 5vw;
+    grid-template-areas: 
+    ". leerling_naam onbesproken_leerlingen ."
+    ". mentor_klas basistijd_leerling ."
+    ". tijd_leerling eindtijd ."
+    ;
+
 }
+
+.schedule-grid-item-leerling_naam {
+    grid-area: leerling_naam;
+    font-size: 5vw;
+    transition: ease-in-out 0.5s;
+}
+
+.schedule-grid-item-leerling_naam:hover {
+    grid-area: leerling_naam;
+    font-size: 5vw;
+}
+.schedule-grid-item-onbesproken_leerlingen {
+    grid-area: onbesproken_leerlingen;
+    font-size: 5vw;
+    padding-left: 2vw;
+    padding-right: 2vw;
+    
+}
+.schedule-grid-item-mentor_klas {
+    grid-area: mentor_klas;
+    font-size: 5vw;
+}
+.schedule-grid-item-basistijd_leerling {
+    grid-area: basistijd_leerling;
+    font-size: 5vw;
+}
+.schedule-grid-item-tijd_leerling {
+    grid-area: tijd_leerling;
+    font-size: 5vw;
+}
+.schedule-grid-item-eindtijd {
+    grid-area: eindtijd;
+    font-size: 5vw;
+    color: lime !important; 
+}
+
+
+.schedule-grid-container > div {
+    background-color: #B0272E;
+    color: white;
+    border-radius: 4vw;
+    text-align: center;
+    text-size-adjust: auto;
+    /*border: 1vw solid gray;*/
+    box-shadow: var(--shadow-elevation-medium);
+    transition: ease-out 0.5s;
+
+}
+.schedule-grid-container > div:hover {
+    box-shadow: var(--shadow-elevation-high);
+    transform: scale(1.02);
+    transition: ease-out 0.4s;
+}
+
 
 b {
     font-weight: bold;
 }
 
-.schedule-grid-container {
-    display: grid; 
-    background-color: #005a9e;
-    width: 100vw;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-    grid-auto-rows: minmax(15.5vw, auto);
-    border: 1vw;
-    row-gap: 1vw;
-    column-gap: 1vw;
-    grid-template-areas: 
-    ". . startlabel startlabel . ."
-    ". . starttime  starttime  . . "
-    ". . passedhudtime passedhudstudents . ."
-    "passedtimepercent passedtimepercent currenttime currenttime passedstudentspercent passedstudentspercent"
-    ". . futurehudtime futurehudstudents . ."
-    ". . endtime endtime . ."
-    ". . endlabel endlabel . ."
-    ;
-
-}
-
 p {
     margin: 0;
     padding: 0;
-}
-
-.schedule-grid-item-start_label {
-    grid-area: startlabel;
-    font-size: 15vw;
-    text-align: center;
-}
-
-.schedule-grid-item-start_time {
-    grid-area: starttime;
-    font-size: 13vw;
-    text-align: center;
-}
-
-.schedule-grid-item-passed_hud_time {
-    grid-area: passedhudtime;
-    font-size: 5vw;
-    text-align: center;
-    padding-top: 1vw;
-}
-
-.schedule-grid-item-passed_hud_students {
-    grid-area: passedhudstudents;
-    font-size: 5vw;
-    text-align: center;
-    padding-top: 1vw;
-}
-
-.schedule-grid-item-passed_time_percent {
-    grid-area: passedtimepercent;
-    font-size: 10vw;
-    text-align: right;
-    padding-top: 2vw;
-}
-
-.schedule-grid-item-current_time {
-    grid-area: currenttime;
-    font-size: 13vw;
-    text-align: center;
-}
-
-.schedule-grid-item-passed_students_percent {
-    grid-area: passedstudentspercent;
-    font-size: 10vw;
-    text-align: left;
-    padding-top: 2vw;
-}
-
-.schedule-grid-item-future_hud_time {
-    grid-area: futurehudtime;
-    font-size: 5vw;
-    text-align: center;
-    padding-top: 1vw;
-}
-
-.schedule-grid-item-future_hud_students {
-    grid-area: futurehudstudents;
-    font-size: 5vw;
-    text-align: center;
-    padding-top: 1vw;
-}
-
-.schedule-grid-item-end_time {
-    grid-area: endtime;
-    font-size: 13vw;
-    text-align: center;
-}
-
-.schedule-grid-item-end_label {
-    grid-area: endlabel;
-    font-size: 15vw;
-    text-align: center;
-}
-
-
-
-.schedule-grid-container > div {
-    background-color: #0078d7;
 }

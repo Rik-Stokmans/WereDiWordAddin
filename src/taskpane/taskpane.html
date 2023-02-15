@@ -20,10 +20,9 @@
     <link href="taskpane.css" rel="stylesheet" type="text/css" />
 </head>
 
-<body class="ms-font-m ms-welcome ms-Fabric">
+<!--<body class="ms-font-m ms-welcome ms-Fabric">
     <header class="ms-welcome__header ms-bgColor-neutralLighter">
-        <img width="180" height="180" src="../../assets/logo-filled.png" alt="Contoso" title="Contoso" />
-        <h1 id="WelcomeMessage"></h1>
+        <img width="180" height="180" src="../../assets/logo-filled.png"/>
     </header>
     <section id="sideload-msg" class="ms-welcome__main">
         <h2 class="ms-font-xl">Please sideload your add-in to see app body.</h2>
@@ -33,64 +32,56 @@
             <span class="ms-Button-label">Hello World!</span>
         </div>-->
 
+<body>
+    <header class="ms-welcome__header ms-bgColor-neutralLighter">
+        <!--<img width="180" height="180" src="../../assets/logo-filled.png"/>-->
+        <img width="270" height="60" src="https://weredi.nl/img/logo.png"/>
+    </header>
+    <section id="sideload-msg" class="ms-welcome__main">
+        <h2 class="ms-font-xl">Please sideload your add-in to see app body.</h2>
+    </section>
+    <main>
         <div class="schedule">
             <div class="schedule-grid-container">
-                <div class="schedule-grid-item-start_label">
-                    Start
+                
+                <div class="schedule-grid-item-leerling_naam">
+                    <p>Rik Stokmans</p>
                 </div>
-                <div class="schedule-grid-item-start_time">
-                    <p id="start_time">None</p>
+                <div class="schedule-grid-item-mentor_klas">
+                    <p>DLF | ha5d</p>
                 </div>
-
-                <div class="schedule-grid-item-passed_hud_time">
-                    <p id="passed_hud_time">-</p>
-                </div>
-                <div class="schedule-grid-item-passed_hud_students">
-                    <p id="passed_hud_students"></p>
+                <div class="schedule-grid-item-tijd_leerling">
+                    <p>5:15  (6:30)</p>
                 </div>
 
-                <div class="schedule-grid-item-passed_time_percent">
-                    <p id="passed_time_percent">0% -</p>
+                <div class="schedule-grid-item-onbesproken_leerlingen">
+                    <p>5 / 8 (28)</p>
                 </div>
-                <div class="schedule-grid-item-current_time">
-                    <p id="current_time"></p>
+                <div class="schedule-grid-item-basistijd_leerling">
+                    <p>3:15</p>
                 </div>
-                <div class="schedule-grid-item-passed_students_percent">
-                    <p id="passed_students_percent">- 0%</p>
-                </div>
-
-                <div class="schedule-grid-item-future_hud_time">
-                    <p id="future_hud_time">-</p>
-                </div>
-                <div class="schedule-grid-item-future_hud_students">
-                    <p id="future_hud_students">-</p>
-                </div>
-
-                <div class="schedule-grid-item-end_time">
-                    <p id="end_time">None</p>
-                </div>
-                <div class="schedule-grid-item-end_label">
-                    Eind
+                <div class="schedule-grid-item-eindtijd">
+                    <p>-6 min</p>
                 </div>
             </div>
             <div class="schedule-grid-item-empty"></div>
         </div>
         
 
-        <input type="time" id="endTimeSelector" min="10:00" value="value">
+        <!--<input type="time" id="endTimeSelector" min="10:00" value="value">
         <button id="scheduleEndTimeSetter">Set end time</button>
 
-        <!--<div class="EndTimeSelector">
+        <div class="EndTimeSelector">
             <p>Tot waneer wil je dat de vergadering duurt?</p>
             <form id="EndTimeSelectorForm">
                 <input type="time" id="timeSelector" min="10:00" value="value">
                 <input type="submit" id="timeSelectorSubmit">
             </form>
             
-        </div>-->
+        </div>
         <button id="scheduleStartButton">Start</button>
 
-        <button id="loadTableButton">Load table</button>
+        <button id="loadTableButton">Load table</button>-->
     </main>
 </body>
 
