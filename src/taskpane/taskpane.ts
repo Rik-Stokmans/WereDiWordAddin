@@ -58,6 +58,7 @@ export async function updateAllTables() {
       var studentTable:Array<studentConfig> = new Array;
       var studentClass:string = tableContent[0][3].slice(0,4);
       var totalTimeWeights:number = 0;
+      var hasActiveStudent:boolean = false;
 
       for (var i = 1; i <= studentCount; i++) {
         totalTimeWeights += +tableContent[i][1]; 
@@ -72,11 +73,12 @@ export async function updateAllTables() {
             done: (tableContent[i][0].toLowerCase() == "v")
           })
         );
-        if ((tableContent[i][0].toLowerCase() == "a")) {
-          activeTableKey = tableKey;
-          activeTableTotalTime = +tableContent[0][3].slice(25,27);
-          activeTableWeightTime = activeTableTotalTime/totalTimeWeights;
-        }
+        if ((tableContent[i][0].toLowerCase() == "a")) hasActiveStudent = true;
+      }
+      if (hasActiveStudent) {
+        activeTableKey = tableKey;
+        activeTableTotalTime = +tableContent[0][3].slice(25,27);
+        activeTableWeightTime = activeTableTotalTime/totalTimeWeights;
       }
       tables[tableKey] = studentTable;
 
@@ -138,14 +140,27 @@ function updateHUD() {
       if (element.active) {
         document.getElementById("schedule-grid-item-leerling_naam").textContent = element.name;
         document.getElementById("schedule-grid-item-mentor_klas").textContent = element.mentor + " | " + element.class;
-        document.getElementById("schedule-grid-item-tijd_leerling").textContent = element.timeUsed.toFixed(2) + " (" + (activeTableWeightTime*element.timeWeight).toFixed(2) + ")";
+        document.getElementById("schedule-grid-item-tijd_leerling").textContent = minutes100ToMinutes60(+element.timeUsed.toFixed(2)) + " (" + minutes100ToMinutes60(+(activeTableWeightTime*element.timeWeight).toFixed(2)) + ")";
 
-        document.getElementById("schedule-grid-item-onbesproken_leerlingen").textContent = element.name;
-        document.getElementById("schedule-grid-item-basistijd_leerling").textContent = activeTableWeightTime.toFixed(2) + "";
-        document.getElementById("schedule-grid-item-eindtijd").textContent = "-6";
+        //document.getElementById("schedule-grid-item-onbesproken_leerlingen").textContent = element.name;
+        document.getElementById("schedule-grid-item-basistijd_leerling").textContent = minutes100ToMinutes60(activeTableWeightTime);
+        //document.getElementById("schedule-grid-item-eindtijd").textContent = "-6";
       }
     });
   }
+}
+
+
+function minutes100ToMinutes60(number: number) : string {
+  var truncValue: number = Math.trunc(number);
+  var remainder: number = number - truncValue;
+
+  var remainderInMinutes: string = Math.round(remainder * 60).toString();
+  if (remainderInMinutes.length < 2) {
+    remainderInMinutes = "0" + remainderInMinutes;
+  }
+  var value: string = truncValue + ":" + remainderInMinutes;
+  return value;
 }
 
 
@@ -182,7 +197,7 @@ function Clock() {
 }
 
 Clock();
-setInterval(Clock, 5000);
+setInterval(Clock, 1000);
 
 //start button action
 /*const scheduleStartButton = document.getElementById('scheduleStartButton');
