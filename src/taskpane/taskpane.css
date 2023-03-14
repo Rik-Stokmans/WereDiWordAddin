@@ -129,36 +129,36 @@
 
 }
 
-.schedule-grid-item-leerling_naam {
+#schedule-grid-item-leerling_naam {
     grid-area: leerling_naam;
     font-size: 5vw;
     transition: ease-in-out 0.5s;
 }
 
-.schedule-grid-item-leerling_naam:hover {
+#schedule-grid-item-leerling_naam:hover {
     grid-area: leerling_naam;
     font-size: 5vw;
 }
-.schedule-grid-item-onbesproken_leerlingen {
+#schedule-grid-item-onbesproken_leerlingen {
     grid-area: onbesproken_leerlingen;
     font-size: 5vw;
     padding-left: 2vw;
     padding-right: 2vw;
     
 }
-.schedule-grid-item-mentor_klas {
+#schedule-grid-item-mentor_klas {
     grid-area: mentor_klas;
     font-size: 5vw;
 }
-.schedule-grid-item-basistijd_leerling {
+#schedule-grid-item-basistijd_leerling {
     grid-area: basistijd_leerling;
     font-size: 5vw;
 }
-.schedule-grid-item-tijd_leerling {
+#schedule-grid-item-tijd_leerling {
     grid-area: tijd_leerling;
     font-size: 5vw;
 }
-.schedule-grid-item-eindtijd {
+#schedule-grid-item-eindtijd {
     grid-area: eindtijd;
     font-size: 5vw;
     color: lime !important; 

@@ -5,9 +5,150 @@
 
 
 /* global document, Office, Word */
-var startTime = "00:00";
-var currentTime = "00:00";
-var endTime = "00:00";
+var currentTime = "00:00:00";
+
+var nextTableKey:number = 0;
+
+var activeTableKey:number = -1;
+var activeTableTotalTime:number = -1;
+var activeTableWeightTime:number = -1;
+var activeTableStartTime:number = -1;
+
+interface HashMap {
+  [key: number] : Array<studentConfig>;
+} 
+let tables: HashMap = {};
+
+interface studentConfig {
+  name: string;
+  mentor: string;
+  class: string;
+  timeWeight: number;
+  timeUsed: number;
+  active: boolean;
+  done: boolean;
+}
+
+
+
+export async function updateAllTables() {
+  return Word.run(async (context) => {
+
+    activeTableKey = -1;
+    var table:Word.Table = context.document.body.tables.getFirstOrNullObject();
+    var updatingTableData:boolean = true;
+    //fetching the table
+    while(updatingTableData) {
+      table.load();
+      await context.sync();
+      //checks to see if there is a table key, if there is none it generates one and adds the student info to the student hashmap
+      //otherwise it updates the info in the hashmap
+      var tableKey: number;
+      //gets all the values
+      var tableContent = table.values;
+      var splitValues = tableContent[0][0].split("  -  ");
+      if (splitValues.length < 2) {
+        tableKey = generateNewTableKey();
+        table.getCell(0,0).body.insertText("  -  " + tableKey, Word.InsertLocation.end);
+      } else {
+        tableKey = +splitValues[1];
+      }
+
+      var studentCount:number = table.rowCount - 1;
+      var studentTable:Array<studentConfig> = new Array;
+      var studentClass:string = tableContent[0][3].slice(0,4);
+      var totalTimeWeights:number = 0;
+
+      for (var i = 1; i <= studentCount; i++) {
+        totalTimeWeights += +tableContent[i][1]; 
+        studentTable.push(
+          generateStudentRecord({
+            name: tableContent[i][2],
+            mentor: tableContent[i][3],
+            class: studentClass,
+            timeWeight: +tableContent[i][1],
+            timeUsed: 0,
+            active: (tableContent[i][0].toLowerCase() == "a"),
+            done: (tableContent[i][0].toLowerCase() == "v")
+          })
+        );
+        if ((tableContent[i][0].toLowerCase() == "a")) {
+          activeTableKey = tableKey;
+          activeTableTotalTime = +tableContent[0][3].slice(25,27);
+          activeTableWeightTime = activeTableTotalTime/totalTimeWeights;
+        }
+      }
+      tables[tableKey] = studentTable;
+
+      var nextTable:Word.Table = table.getNextOrNullObject();
+      await context.sync();
+
+      if (nextTable.isNullObject) {
+        updatingTableData = false;
+      } else {
+        table = nextTable;
+      }
+    }
+  });
+}
+
+
+
+function getTableKey(wordTable: Word.Table) : number {
+  var table: string[][] = wordTable.values;
+  var tableKey: number
+
+  var splitValues = table[0][0].split("  -  ");
+  if (splitValues.length < 2) {
+    tableKey = generateNewTableKey();
+    wordTable.getCell(0,0).body.insertText("  -  " + tableKey, Word.InsertLocation.end);
+  } else {
+    tableKey = +splitValues[1];
+  }
+  return tableKey;
+}
+
+
+
+function generateStudentRecord(config: studentConfig) : {name: string, mentor: string, class: string, timeWeight: number, timeUsed: number, active: boolean, done: boolean} {
+  let newStudentRecord:studentConfig = {name: "geen", mentor: "geen", class: "geen", timeWeight: 0, timeUsed: 0, active: false, done: false};
+  newStudentRecord.name = config.name;
+  newStudentRecord.mentor = config.mentor;
+  newStudentRecord.class = config.class;
+  newStudentRecord.timeWeight = config.timeWeight;
+  newStudentRecord.timeUsed = config.timeUsed;
+  newStudentRecord.active = config.active;
+  newStudentRecord.done = config.done;
+  return newStudentRecord;
+}
+
+
+
+function generateNewTableKey() : number {
+  nextTableKey++;
+  return nextTableKey;
+}
+
+
+
+function updateHUD() {
+  if (activeTableKey != -1) {
+    var studentTable:studentConfig[] = tables[activeTableKey];
+    studentTable.forEach(element => {
+      if (element.active) {
+        document.getElementById("schedule-grid-item-leerling_naam").textContent = element.name;
+        document.getElementById("schedule-grid-item-mentor_klas").textContent = element.mentor + " | " + element.class;
+        document.getElementById("schedule-grid-item-tijd_leerling").textContent = element.timeUsed.toFixed(2) + " (" + (activeTableWeightTime*element.timeWeight).toFixed(2) + ")";
+
+        document.getElementById("schedule-grid-item-onbesproken_leerlingen").textContent = element.name;
+        document.getElementById("schedule-grid-item-basistijd_leerling").textContent = activeTableWeightTime.toFixed(2) + "";
+        document.getElementById("schedule-grid-item-eindtijd").textContent = "-6";
+      }
+    });
+  }
+}
+
+
 
 Office.onReady((info) => {
   if (info.host === Office.HostType.Word) {
@@ -16,46 +157,32 @@ Office.onReady((info) => {
   }
 });
 
-//var startTimeElement = document.getElementById("start_time");
-var clock = document.getElementById('current_time');
-//var endTimeElement = document.getElementById("end_time");
-//var endTimeSelector = document.getElementById('endTimeSelector');
 
 
 function Clock() {
   var curTime = new Date();
   var hours = curTime.getHours().toString();
   var minutes = curTime.getMinutes().toString();
+  var seconds = curTime.getSeconds.toString();
 
   if (hours.length < 2) {
     hours = '0' + hours;
   }
-
   if (minutes.length < 2) {
     minutes = '0' + minutes;
   }
-
-  //sets the time to a variable
-  currentTime = hours + ':' + minutes;
-
-  //checks if the timer is still on the same minute
-  const prevTime = clock.textContent.split(":");
-  if (prevTime[1] != (" "+minutes+" ")) {
-    //updates the minimum value for the end time
-    /*if (minutes == "59") endTimeSelector.setAttribute("min", ((hours+1) + ":00"));
-    else {
-      endTimeSelector.setAttribute("min", (hours + ":" + (minutes+1)));
-    }*/
+  if (seconds.length < 2) {
+    seconds = '0' + seconds;
   }
-  //updates the clock variable to the current time
-  clock.textContent = currentTime;
+  //sets the time to a variable
+  currentTime = hours + ':' + minutes + ':' + seconds;
 
-  //updates the schedule hud
-  //updateScheduleHud();
+  updateAllTables();
+  updateHUD();
 }
 
 Clock();
-setInterval(Clock, 1000);
+setInterval(Clock, 5000);
 
 //start button action
 /*const scheduleStartButton = document.getElementById('scheduleStartButton');
@@ -107,75 +234,27 @@ loadTableButton?.addEventListener('click', function handleClick(event) {
   }
 }*/
 
-function getAmountOfMinutes(time: String):number {
+function getAmountOfSeconds(time: String):number {
 
   const splittedTime = time.split(":");
-  var hours: number = Number(splittedTime[0]);
-  var minutes: number = Number(splittedTime[1]);
+  var hours: number = +splittedTime[0];
+  var minutes: number = +splittedTime[1];
+  var seconds: number = +splittedTime[2];
 
-  minutes += hours*60;
-  return minutes;
-  
-}
-
-var studentCount: number = 0;
-var markedStudentCount: number = 0;
-var studentTimeWeightTotal: number = 0;
-var studentTimeWeightDone: number = 0;
-
-export async function getTableInfo() {
-  return Word.run(async (context) => {
-    //resets table data variables
-    studentCount = 0;
-    markedStudentCount = 0;
-    studentTimeWeightTotal = 0;
-    studentTimeWeightDone = 0;
-
-    //fetching the table
-    var StundentTable: Word.Table = context.document.body.tables.getFirst();
-    StundentTable.load();
-
-    await context.sync();
-
-    studentCount = StundentTable.rowCount - 1;
-
-    var values: string[][] = StundentTable.values;
-
-    var iterator: number = studentCount;
-    for (var i:number = 1; i <= iterator; i++) {
-      var studentTimeWeight:number = +values[i][1];
-      studentTimeWeightTotal += studentTimeWeight;
-
-      if (values[i][0].toLowerCase() == "x") {
-        markedStudentCount++;
-        studentTimeWeightDone += studentTimeWeight;
-      } 
-      else if (values[i][0] == "-" || values[i][0] == "") {
-        studentCount--;
-      }
-    }
-  });
-}
-
-function updateTableHud() {
-  getTableInfo();
-
-  var passed_hud_students = document.getElementById("passed_hud_students");
-  passed_hud_students.textContent = markedStudentCount.toString();
-
-  var future_hud_students = document.getElementById("future_hud_students");
-  future_hud_students.textContent = (studentCount - markedStudentCount).toString();
+  seconds += (minutes*60 + hours*3600)
+  return seconds;
 }
 
 
-export async function HelloWorld(debug: String, debug2: String, debug3: String) {
+
+export async function HelloWorld(debug: string) {
   return Word.run(async (context) => {
     /**
      * Insert your Word code here
      */
 
     // insert a paragraph at the end of the document.
-    const paragraph = context.document.body.insertParagraph(debug + " - " + debug2 + " - " + debug3, Word.InsertLocation.end);
+    const paragraph = context.document.body.insertParagraph(debug, Word.InsertLocation.end);
 
     // change the paragraph color to blue.
     paragraph.font.color = "blue";
